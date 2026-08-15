@@ -50,7 +50,7 @@ main {
     user-select: none;
 }
 
-button {
+button, .operator, .noWrite, #changeSign {
     background-color: rgb(0, 0, 0);
     color: white;
     padding: 2px;
@@ -61,4 +61,12 @@ button {
     border-radius: 30px;
     width: 120px;
     height: 120px;
+}
+
+.noWrite {
+    background-color: rgb(43, 43, 43);
+}
+
+.operator, #run {
+    background-color: rgb(38, 125, 255);
 }
