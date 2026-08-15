@@ -33,14 +33,16 @@ main {
     display: flex;
     flex-shrink: 1;
     padding: 0px;
+    height: 100px;
     width: 100%;
     justify-content: end;
     align-items: center;
+    overflow: hidden;
 }
 
 #screen {
     color: rgb(253, 253, 253);
-    font-size: 80px;
+    font-size: 45px;
     padding-right: 10px;
 }
 
