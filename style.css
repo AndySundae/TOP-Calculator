@@ -2,3 +2,61 @@
     font-family: "SF Pro";
     src: url("./fonts/SF-Pro.woff2") format("woff2");
 }
+
+body {
+    margin: 0;
+    background-color: rgb(37, 37, 37);
+    text-align: center; /* Change this later if it messes up stuff */
+    font-family: "SF Pro", sans-serif;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#calculatorBody {
+    display: flex;
+    flex-shrink: 1;
+    background-color: rgb(22, 22, 22);
+    width: 500px;
+    height: fit-content;
+    padding: 10px;
+    border-radius: 15px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#display {
+    display: flex;
+    flex-shrink: 1;
+    padding: 0px;
+    width: 100%;
+    justify-content: end;
+    align-items: center;
+}
+
+#screen {
+    color: rgb(253, 253, 253);
+    font-size: 80px;
+    padding-right: 10px;
+}
+
+.buttons {
+    user-select: none;
+}
+
+button {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    padding: 2px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 50px;
+    cursor: pointer;
+    border-radius: 30px;
+    width: 120px;
+    height: 120px;
+}
