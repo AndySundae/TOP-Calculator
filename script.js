@@ -17,48 +17,61 @@ function havesOperator(option, isDisabled, endEarly){ // option: text or target,
         btnOperators.forEach(button => button.disabled = isDisabled)
     }
 } // estoy orgulloso de esta funcion loco :3
+let zeroCondition = 0;
+function whatNumber(target, firstOrSecond) {
+    
+    let op
+    if(target.classList.contains("operator")) op = target.textContent
+    if(firstNumber.textContent == "") firstNumber.textContent="0"
 
-function whatNumber(target, firstOrSecond, del) {
-    if(del){
-        console.log(target)
-        if(target.id == "delete") firstOrSecond.textContent = firstOrSecond.textContent.slice(0, -1)
-        if(firstNumber.textContent == "") firstOrSecond.textContent="0"
-        return
-    } 
-    if(firstOrSecond.textContent == 0){
-        if(havesOperator(target, false, true)) return
+    // if(op) {
+    //         operator.textContent=op
+    //     } return
+
+    if(firstNumber.textContent == 0 && zeroCondition == 0){
+        if(op) return
         firstOrSecond.textContent=target.textContent
-    } else firstOrSecond.textContent+=target.textContent
+        zeroCondition = 1
+    } else {
+        firstOrSecond.textContent+=target.textContent
+        
+    }
 }
 
-// if(target.id == "delete") text.textContent = text.textContent.slice(0, -1)
-//     if(target.id == "clear" || text.textContent == "") text.textContent="0"
-//     if(target.classList.contains("noWrite")) return
+function remove() {
+    if(!secondNumber.textContent == "") {
+        secondNumber.textContent = secondNumber.textContent.slice(0, -1)
+    } else if(!operator.textContent == ""){
+        operator.textContent = operator.textContent=""
+    } else if(!firstNumber.textContent == "") {
+        firstNumber.textContent = firstNumber.textContent.slice(0, -1)
+        if(firstNumber.textContent == "") firstNumber.textContent=0
+    }
+}
 
-
-// if(text.textContent == 0){
-//         if(havesOperator(target, false, true)) return
-//         text.textContent=target.textContent
-//     } else text.textContent+=target.textContent
 
 
 function write(target){
-    let number;
-    let op;
-    if(target.classList.contains("number")) number = target.textContent
-    if(target.classList.contains("operator")) op = target.textContent
+    havesOperator(text, false) // si no hay un operador
 
-    havesOperator(text, false)
-    if(!havesOperator(text, false, true)) whatNumber(target, firstNumber, true) 
-    if(havesOperator(text, false, true)) whatNumber(target, secondNumber, true)
+    if(target.id == "delete") remove()
 
     if(target.id == "clear") {
         firstNumber.textContent="0" 
+        operator.textContent=""
         secondNumber.textContent=""
+        zeroCondition = 0
     }
+
+    // poner porcentage, cambiar signo antes de return
+    
     if(target.classList.contains("noWrite")) return
-    if(!havesOperator(text, false, true)) whatNumber(target, firstNumber)
+        
+    // si no es ninguno de los botones q no se dibujan
+
     if(havesOperator(text, false, true)) whatNumber(target, secondNumber)
+    if(!havesOperator(text, false, true)) whatNumber(target, firstNumber)
+    
 
     havesOperator(text, true)
     
