@@ -41,6 +41,7 @@ main {
 }
 
 #screen {
+    display: flex;
     color: rgb(253, 253, 253);
     font-size: 45px;
     padding-right: 10px;
