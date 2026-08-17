@@ -3,13 +3,13 @@ let text = document.querySelector("#screen")
 let btnOperators = document.querySelectorAll(".operator")
 
 let operator = document.getElementById("operator")
-
 let firstNumber = document.getElementById("firstNumber")
 let secondNumber = document.getElementById("secondNumber")
+let zeroCondition = 0; // checks if zero was pressed in current instance
+let comma = document.getElementById("comma")
 
 const operators = ["x", "+", "-", "/"]
 // CONTROL FLOW, CHECK THE FLOW!!!
-// comma no deberia estar en operadores
 
 function havesOperator(option, isDisabled, endEarly){ // option: text or target, isDisabled: True or False, endEarly: True or False,
     if(operators.some(operator => option.textContent.includes(operator))){ 
@@ -17,50 +17,57 @@ function havesOperator(option, isDisabled, endEarly){ // option: text or target,
         btnOperators.forEach(button => button.disabled = isDisabled)
     }
 } // estoy orgulloso de esta funcion loco :3
-let zeroCondition = 0;
+
+function checkComma(option, target) {
+    if(option.textContent.includes(",") || target.id == "comma") {
+        comma.disabled = true
+    } else if(!option.textContent.includes(",")) {
+        comma.disabled = false
+    } 
+}
+
 function whatNumber(target, firstOrSecond) {
-    
     let op
     if(target.classList.contains("operator")) op = target.textContent
+
+    checkComma(firstOrSecond, target)
     if(firstNumber.textContent == "") firstNumber.textContent="0"
-
-    // if(op) {
-    //         operator.textContent=op
-    //     } return
-
     if(firstNumber.textContent == 0 && zeroCondition == 0){
         if(op) return
         firstOrSecond.textContent=target.textContent
         zeroCondition = 1
     } else {
         firstOrSecond.textContent+=target.textContent
-        
     }
 }
 
-function remove() {
+function remove(target) {
     if(!secondNumber.textContent == "") {
         secondNumber.textContent = secondNumber.textContent.slice(0, -1)
+        checkComma(secondNumber, target)
     } else if(!operator.textContent == ""){
         operator.textContent = operator.textContent=""
     } else if(!firstNumber.textContent == "") {
         firstNumber.textContent = firstNumber.textContent.slice(0, -1)
-        if(firstNumber.textContent == "") firstNumber.textContent=0
+        checkComma(firstNumber, target)
+        if(firstNumber.textContent == "") {
+            firstNumber.textContent=0
+            zeroCondition = 0;
+        }
     }
 }
-
-
 
 function write(target){
     havesOperator(text, false) // si no hay un operador
 
-    if(target.id == "delete") remove()
+    if(target.id == "delete") remove(target)
 
     if(target.id == "clear") {
         firstNumber.textContent="0" 
         operator.textContent=""
         secondNumber.textContent=""
         zeroCondition = 0
+        comma.disabled = false
     }
 
     // poner porcentage, cambiar signo antes de return
@@ -77,8 +84,6 @@ function write(target){
     
     // if(target.id == "run") operate() Math.floor(text.textContent) - Math.floor(text.textContent) // convertir a int recortar letras
 };
-// al inputear un numero cuando se le de a un operator crea otro string con el segundo numero, para que puedas haber mas de 1 comma
-
 
 buttons.addEventListener("click", (event) => {
     event.preventDefault();
@@ -90,3 +95,4 @@ buttons.addEventListener("click", (event) => {
 
 
 // 3 hours~ first session 15/08/2026
+// 1.5 ~? second session 16/08/2026
