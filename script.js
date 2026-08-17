@@ -81,7 +81,7 @@ function write(target){
 
     // poner porcentage, cambiar signo antes de return
 
-    if(target.id == "run") operate()
+    if(target.id == "run") run()
     
     if(target.classList.contains("noWrite")) return
         
@@ -95,10 +95,45 @@ function write(target){
     // if(target.id == "run") operate() Math.floor(text.textContent) - Math.floor(text.textContent) // convertir a int recortar letras
 };
 
-function operate() {
+function run() {
+    let num1 = Number(firstNumber.textContent)
+    let operate = operator.textContent
+    let num2 = Number(secondNumber.textContent)
     console.log( firstNumber.textContent , operator.textContent , secondNumber.textContent )
+    
+    switch (operate) {
+        case "+":  
+            firstNumber.textContent = add(num1, num2)
+            break;
+        case "-":
+            firstNumber.textContent = subtract(num1, num2)
+            break;
+        case "x":
+            firstNumber.textContent = multiply(num1, num2)
+            break;
+        case "/":
+            firstNumber.textContent = divide(num1, num2)
+            break;
+    }
+    operator.textContent = ""
+    secondNumber.textContent = ""
 }
 
+function add(a, b) {
+    return a + b
+}
+
+function subtract(a, b) {
+    return a - b
+}
+
+function multiply(a, b) {
+    return a * b
+}
+
+function divide(a, b) {
+    return a / b
+}
 
 buttons.addEventListener("click", (event) => {
     event.preventDefault();
@@ -107,7 +142,7 @@ buttons.addEventListener("click", (event) => {
     write(event.target)
 });
 
-
+// Add the last operation on top of the display in gray like history
 
 // 3 hours~ first session 15/08/2026
-// 1.5 ~? second session 16/08/2026
+// 2 ~? second session 16/08/2026
