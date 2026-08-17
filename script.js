@@ -19,9 +19,9 @@ function havesOperator(option, isDisabled, endEarly){ // option: text or target,
 } // estoy orgulloso de esta funcion loco :3
 
 function checkComma(option, target) {
-    if(option.textContent.includes(",") || target.id == "comma") {
+    if(option.textContent.includes(".") || target.id == "comma") {
         comma.disabled = true
-    } else if(!option.textContent.includes(",")) {
+    } else if(!option.textContent.includes(".")) {
         comma.disabled = false
     } 
 }
@@ -81,7 +81,7 @@ function write(target){
 
     // poner porcentage, cambiar signo antes de return
 
-    if(target.id == "run") run()
+    if(target.id == "run") run(target)
     
     if(target.classList.contains("noWrite")) return
         
@@ -95,7 +95,7 @@ function write(target){
     // if(target.id == "run") operate() Math.floor(text.textContent) - Math.floor(text.textContent) // convertir a int recortar letras
 };
 
-function run() {
+function run(target) {
     let num1 = Number(firstNumber.textContent)
     let operate = operator.textContent
     let num2 = Number(secondNumber.textContent)
@@ -117,6 +117,7 @@ function run() {
     }
     operator.textContent = ""
     secondNumber.textContent = ""
+    checkComma(firstNumber, target)
 }
 
 function add(a, b) {
