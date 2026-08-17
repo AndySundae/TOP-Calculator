@@ -28,17 +28,26 @@ function checkComma(option, target) {
 
 function whatNumber(target, firstOrSecond) {
     let op
+    let num
     if(target.classList.contains("operator")) op = target.textContent
-
+    if(target.classList.contains("number") || target.id == "comma") num = target.textContent
+    
     checkComma(firstOrSecond, target)
     if(firstNumber.textContent == "") firstNumber.textContent="0"
     if(firstNumber.textContent == 0 && zeroCondition == 0){
         if(op) return
-        firstOrSecond.textContent=target.textContent
+        if(target.id == "comma") { 
+            comma.disabled = false
+            return
+        }
+        firstOrSecond.textContent=num
         zeroCondition = 1
     } else {
-        firstOrSecond.textContent+=target.textContent
+        if(op) { 
+            operator.textContent=op 
+        } else if(num) firstOrSecond.textContent+=num
     }
+    
 }
 
 function remove(target) {
@@ -71,6 +80,8 @@ function write(target){
     }
 
     // poner porcentage, cambiar signo antes de return
+
+    if(target.id == "run") operate()
     
     if(target.classList.contains("noWrite")) return
         
@@ -78,12 +89,16 @@ function write(target){
 
     if(havesOperator(text, false, true)) whatNumber(target, secondNumber)
     if(!havesOperator(text, false, true)) whatNumber(target, firstNumber)
-    
-
+   
     havesOperator(text, true)
-    
+
     // if(target.id == "run") operate() Math.floor(text.textContent) - Math.floor(text.textContent) // convertir a int recortar letras
 };
+
+function operate() {
+    console.log( firstNumber.textContent , operator.textContent , secondNumber.textContent )
+}
+
 
 buttons.addEventListener("click", (event) => {
     event.preventDefault();
