@@ -129,19 +129,19 @@ function isComplete() {
 }
 
 function add(a, b) {
-    return a + b
+    return Number((a + b).toFixed(15))
 }
 
 function subtract(a, b) {
-    return a - b
+    return Number((a * b).toFixed(15))
 }
 
 function multiply(a, b) {
-    return a * b
+    return Number((a * b).toFixed(15))
 }
 
 function divide(a, b) {
-    return a / b
+    return Number((a / b).toFixed(15))
 }
 
 buttons.addEventListener("click", (event) => {
