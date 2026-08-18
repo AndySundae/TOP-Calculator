@@ -11,9 +11,12 @@ let comma = document.getElementById("comma")
 const operators = ["x", "+", "-", "/"]
 // CONTROL FLOW, CHECK THE FLOW!!!
 
-function havesOperator(option, isDisabled, endEarly){ // option: text or target, isDisabled: True or False, endEarly: True or False,
+function havesOperator(option, isDisabled, endEarly, target){ // option: text or target, isDisabled: True or False, endEarly: True or False,
     if(operators.some(operator => option.textContent.includes(operator))){ 
         if(endEarly) return true;
+        if(isComplete() && target.classList.contains("operator")) {
+            run(target)
+        } return
         btnOperators.forEach(button => button.disabled = isDisabled)
     }
 } // estoy orgulloso de esta funcion loco :3
@@ -43,7 +46,7 @@ function whatNumber(target, firstOrSecond) {
         firstOrSecond.textContent=num
         zeroCondition = 1
     } else {
-        if(op) { 
+        if(op && !isComplete()) { 
             operator.textContent=op 
         } else if(num) firstOrSecond.textContent+=num
     }
@@ -67,7 +70,7 @@ function remove(target) {
 }
 
 function write(target){
-    havesOperator(text, false) // si no hay un operador
+    havesOperator(text, false, false, target) // si no hay un operador
 
     if(target.id == "delete") remove(target)
 
@@ -87,10 +90,10 @@ function write(target){
         
     // si no es ninguno de los botones q no se dibujan
 
-    if(havesOperator(text, false, true)) whatNumber(target, secondNumber)
-    if(!havesOperator(text, false, true)) whatNumber(target, firstNumber)
+    if(havesOperator(text, false, true, target)) whatNumber(target, secondNumber,)
+    if(!havesOperator(text, false, true, target)) whatNumber(target, firstNumber)
    
-    havesOperator(text, true)
+    havesOperator(text, true, false, target)
 
     // if(target.id == "run") operate() Math.floor(text.textContent) - Math.floor(text.textContent) // convertir a int recortar letras
 };
@@ -120,6 +123,11 @@ function run(target) {
     checkComma(firstNumber, target)
 }
 
+function isComplete() {
+    if(firstNumber.textContent != "" && operator.textContent != "" && secondNumber.textContent != "") return true
+    return false
+}
+
 function add(a, b) {
     return a + b
 }
@@ -144,6 +152,10 @@ buttons.addEventListener("click", (event) => {
 });
 
 // Add the last operation on top of the display in gray like history
+// When an operation is complete like (12 + 7) if another operator is clicked it will run (12+7) an then add the operator
+// operator buttons become available and act like run button when an operation haves all his parts (firstNumber, operator and secondNumber)
+// Create variable like (zeroCondition) that changes depending if operation is full and lets input operator
 
 // 3 hours~ first session 15/08/2026
 // 2 ~? second session 16/08/2026
+// 1.5 third session 17/08/2026
