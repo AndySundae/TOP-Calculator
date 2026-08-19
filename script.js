@@ -8,6 +8,8 @@ let secondNumber = document.getElementById("secondNumber")
 let zeroCondition = 0; // checks if zero was pressed in current instance
 let comma = document.getElementById("comma")
 
+let totalNumbers = firstNumber.textContent // AHHHH
+
 const operators = ["x", "+", "-", "/"]
 // CONTROL FLOW, CHECK THE FLOW!!!
 
@@ -39,6 +41,9 @@ function whatNumber(target, firstOrSecond) {
     if(firstNumber.textContent == "") firstNumber.textContent="0"
     if(firstNumber.textContent == 0 && zeroCondition == 0){
         if(op) return
+        // if(op == "-") {
+        //     firstOrSecond.textContent=op
+        // } 
         if(target.id == "comma") { 
             comma.disabled = false
             return
@@ -71,20 +76,21 @@ function remove(target) {
 
 function write(target){
     havesOperator(text, false, false, target) // si no hay un operador
-
+    
     if(target.id == "delete") remove(target)
 
-    if(target.id == "clear") {
-        firstNumber.textContent="0" 
-        operator.textContent=""
-        secondNumber.textContent=""
-        zeroCondition = 0
-        comma.disabled = false
+    if(target.id == "clear") clear()
+
+    if(target.id == "changeSign") {
+        changeSign()
     }
 
     // poner porcentage, cambiar signo antes de return
 
-    if(target.id == "run") run(target)
+    if(target.id == "run") { 
+        run(target)
+        if(firstNumber.textContent != "" && target.classList.contains("number")) clear()
+    }
     
     if(target.classList.contains("noWrite")) return
         
@@ -104,6 +110,7 @@ function run(target) {
     let num2 = Number(secondNumber.textContent)
     console.log( firstNumber.textContent , operator.textContent , secondNumber.textContent )
     
+
     switch (operate) {
         case "+":  
             firstNumber.textContent = add(num1, num2)
@@ -128,6 +135,14 @@ function isComplete() {
     return false
 }
 
+function clear() {
+    firstNumber.textContent="0" 
+    operator.textContent=""
+    secondNumber.textContent=""
+    zeroCondition = 0
+    comma.disabled = false
+}
+
 function add(a, b) {
     return Number((a + b).toFixed(15))
 }
@@ -144,6 +159,15 @@ function divide(a, b) {
     return Number((a / b).toFixed(15))
 }
 
+function changeSign() {
+    if(havesOperator(text, false, true)) {
+        secondNumber.textContent = Number(secondNumber.textContent * -1)
+    }
+    if(!havesOperator(text, false, true)) {
+        firstNumber.textContent = Number(firstNumber.textContent * -1)
+    }
+}
+
 buttons.addEventListener("click", (event) => {
     event.preventDefault();
     if(event.target.tagName !== "BUTTON") return
@@ -156,6 +180,12 @@ buttons.addEventListener("click", (event) => {
 // operator buttons become available and act like run button when an operation haves all his parts (firstNumber, operator and secondNumber)
 // Create variable like (zeroCondition) that changes depending if operation is full and lets input operator
 
+// When a result is displayed, pressing a new digit should clear the result and start a new calculation instead 
+// of appending the digit to the existing result. Check whether this is the case on your calculator!
+
+
+
 // 3 hours~ first session 15/08/2026
 // 2 ~? second session 16/08/2026
 // 1.5 third session 17/08/2026
+// 1? fourth session 18/08/2026
