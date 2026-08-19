@@ -5,6 +5,7 @@ let btnOperators = document.querySelectorAll(".operator")
 let operator = document.getElementById("operator")
 let firstNumber = document.getElementById("firstNumber")
 let secondNumber = document.getElementById("secondNumber")
+let result = 0;
 let zeroCondition = 0; // checks if zero was pressed in current instance
 let comma = document.getElementById("comma")
 
@@ -76,7 +77,7 @@ function remove(target) {
 
 function write(target){
     havesOperator(text, false, false, target) // si no hay un operador
-    
+    console.log(result)
     if(target.id == "delete") remove(target)
 
     if(target.id == "clear") clear()
@@ -89,9 +90,8 @@ function write(target){
 
     if(target.id == "run") { 
         run(target)
-        if(firstNumber.textContent != "" && target.classList.contains("number")) clear()
     }
-    
+    if(result == 1 && !operators.some(operator => text.textContent.includes(operator)) && target.classList.contains("number")) clear()
     if(target.classList.contains("noWrite")) return
         
     // si no es ninguno de los botones q no se dibujan
@@ -114,15 +114,19 @@ function run(target) {
     switch (operate) {
         case "+":  
             firstNumber.textContent = add(num1, num2)
+            result = 1;
             break;
         case "-":
             firstNumber.textContent = subtract(num1, num2)
+            result = 1;
             break;
         case "x":
             firstNumber.textContent = multiply(num1, num2)
+            result = 1;
             break;
         case "/":
             firstNumber.textContent = divide(num1, num2)
+            result = 1;
             break;
     }
     operator.textContent = ""
@@ -140,6 +144,7 @@ function clear() {
     operator.textContent=""
     secondNumber.textContent=""
     zeroCondition = 0
+    result = 0;
     comma.disabled = false
 }
 
@@ -148,7 +153,7 @@ function add(a, b) {
 }
 
 function subtract(a, b) {
-    return Number((a * b).toFixed(15))
+    return Number((a - b).toFixed(15))
 }
 
 function multiply(a, b) {
