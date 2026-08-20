@@ -9,18 +9,20 @@ let result = 0;
 let zeroCondition = 0; // checks if zero was pressed in current instance
 let comma = document.getElementById("comma")
 
-let totalNumbers = firstNumber.textContent // AHHHH
+// let totalNumbers = firstNumber.textContent // AHHHH
 
 const operators = ["x", "+", "-", "/"]
 // CONTROL FLOW, CHECK THE FLOW!!!
+// AGAIN, CHECK ALWAYS THE FLOW
 
 function havesOperator(option, isDisabled, endEarly, target){ // option: text or target, isDisabled: True or False, endEarly: True or False,
     if(operators.some(operator => option.textContent.includes(operator))){ 
         if(endEarly) return true;
+        if(firstNumber.textContent[0] == "-" || secondNumber.textContent[0] == "-") return false
         if(isComplete() && target.classList.contains("operator")) {
             run(target)
         } return
-        btnOperators.forEach(button => button.disabled = isDisabled)
+        // btnOperators.forEach(button => button.disabled = isDisabled) // dead code, delete later
     }
 } // estoy orgulloso de esta funcion loco :3
 
@@ -37,14 +39,21 @@ function whatNumber(target, firstOrSecond) {
     let num
     if(target.classList.contains("operator")) op = target.textContent
     if(target.classList.contains("number") || target.id == "comma") num = target.textContent
-    
+
+    if(target.id == "subtract" && (firstOrSecond.textContent[0] == 0 || firstOrSecond.textContent[0] == "") && !firstOrSecond.textContent.includes(".")) {
+        firstOrSecond.textContent = "-"
+        return
+    } 
+
+    if(operator.textContent != "" && target.id == "subtract") {
+        secondNumber.textContent = "-"
+        return
+    }
+
     checkComma(firstOrSecond, target)
     if(firstNumber.textContent == "") firstNumber.textContent="0"
     if(firstNumber.textContent == 0 && zeroCondition == 0){
         if(op) return
-        // if(op == "-") {
-        //     firstOrSecond.textContent=op
-        // } 
         if(target.id == "comma") { 
             comma.disabled = false
             return
@@ -52,7 +61,7 @@ function whatNumber(target, firstOrSecond) {
         firstOrSecond.textContent=num
         zeroCondition = 1
     } else {
-        if(op && !isComplete()) { 
+        if(op && !isComplete()) { // aca
             operator.textContent=op 
         } else if(num) firstOrSecond.textContent+=num
     }
@@ -91,23 +100,31 @@ function write(target){
     if(target.id == "run") { 
         run(target)
     }
+
     if(result == 1 && !operators.some(operator => text.textContent.includes(operator)) && target.classList.contains("number")) clear()
+
     if(target.classList.contains("noWrite")) return
         
     // si no es ninguno de los botones q no se dibujan
 
-    if(havesOperator(text, false, true, target)) whatNumber(target, secondNumber,)
-    if(!havesOperator(text, false, true, target)) whatNumber(target, firstNumber)
+    if(havesOperator(operator, false, true, target)) {
+        whatNumber(target, secondNumber)
+        // if(secondNumber.textContent[0] == "-"){
+        //     secondNumber.textContent=`(${secondNumber.textContent})`
+        // }
+    } 
+    if(!havesOperator(operator, false, true, target)) {
+        whatNumber(target, firstNumber)
+    }
    
     havesOperator(text, true, false, target)
-
-    // if(target.id == "run") operate() Math.floor(text.textContent) - Math.floor(text.textContent) // convertir a int recortar letras
 };
 
 function run(target) {
     let num1 = Number(firstNumber.textContent)
     let operate = operator.textContent
     let num2 = Number(secondNumber.textContent)
+    if(operate == "" || num2 == "") return
     console.log( firstNumber.textContent , operator.textContent , secondNumber.textContent )
     
 
@@ -194,3 +211,4 @@ buttons.addEventListener("click", (event) => {
 // 2 ~? second session 16/08/2026
 // 1.5 third session 17/08/2026
 // 1? fourth session 18/08/2026
+// 1? fifth session 19/08/2026
