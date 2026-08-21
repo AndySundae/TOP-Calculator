@@ -126,7 +126,7 @@ function run(target) {
     let num1 = Number(firstNumber.textContent)
     let operate = operator.textContent
     let num2 = Number(secondNumber.textContent)
-    if(operate == "" || num2 == "") return
+    if(operate === "" || num2 === "") return
     console.log( firstNumber.textContent , operator.textContent , secondNumber.textContent )
     switch (operate) {
         case "+":  
@@ -210,8 +210,6 @@ buttons.addEventListener("click", (event) => {
 
 // patch having the posibility to spam -
 // add parenthesis when secondNumber haves -
-// fix changeSign so it actually works xd
-// weird 0 behaviour, nothink operates when 0 is present
 // add keyboard support
 
 // 3 hours~ first session 15/08/2026
