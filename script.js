@@ -171,6 +171,14 @@ function percentage(target) {
     } else if(!havesOperator(operator, false, true, target)) firstNumber.textContent = firstNumber.textContent / 100
 }
 
+function changeSign() {
+    if(secondNumber.textContent !="") {
+        secondNumber.textContent = secondNumber.textContent * -1
+    } else if(operator.textContent == "") {
+        firstNumber.textContent = firstNumber.textContent * -1
+    }
+}
+
 function deleteParenthesis() {
     secondNumber.textContent.replace(/[()]/g, "") // CHECK
 }
