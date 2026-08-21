@@ -5,7 +5,7 @@ let btnOperators = document.querySelectorAll(".operator")
 let operator = document.getElementById("operator")
 let firstNumber = document.getElementById("firstNumber")
 let secondNumber = document.getElementById("secondNumber")
-let result = 0;
+let endOfOperation = 0;
 let zeroCondition = 0; // checks if zero was pressed in current instance
 let comma = document.getElementById("comma")
 
@@ -40,15 +40,22 @@ function whatNumber(target, firstOrSecond) {
     if(target.classList.contains("operator")) op = target.textContent
     if(target.classList.contains("number") || target.id == "comma") num = target.textContent
 
-    if(target.id == "subtract" && (firstOrSecond.textContent[0] == 0 || firstOrSecond.textContent[0] == "") && !firstOrSecond.textContent.includes(".") && zeroCondition == 0) {
+    
+
+    if(target.id == "subtract" && 
+        (firstOrSecond.textContent[0] == 0 || firstOrSecond.textContent[0] == "") && 
+        !firstOrSecond.textContent.includes(".") && zeroCondition == 0) {
         firstOrSecond.textContent = "-"
         return
     } 
 
-    if(operator.textContent != "" && target.id == "subtract") {
+    //if(target.id == "subtract" && firstOrSecond.textContent.includes("-")) return
+
+    if(operator.textContent != "" && target.id == "subtract" && secondNumber.textContent=="") {
         secondNumber.textContent = "-"
         return
-    }
+    } else if(isComplete() && target.classList.contains("operator")) run(target)
+    
 
     checkComma(firstOrSecond, target)
     if(firstNumber.textContent == "") firstNumber.textContent="0"
@@ -85,29 +92,18 @@ function remove(target) {
 }
 
 function write(target){
-    havesOperator(text, false, false, target) // si no hay un operador
-    console.log(result)
-    if(target.id == "delete") remove(target)
+    havesOperator(text, false, false, target)
+    console.log(endOfOperation)
 
-    if(target.id == "clear") clear()
-
-    if(target.id == "changeSign") {
-        changeSign()
+    switch (target.id) {
+        case "delete": remove(target); break;
+        case "clear": clear(); break;
+        case "changeSign": changeSign(); break;
+        case "percentage": percentage(target); break;
+        case "run": run(target); break;
     }
 
-    if(target.id == "percentage") {
-        if(havesOperator(operator, false, true, target)) {
-            secondNumber.textContent = secondNumber.textContent / 100
-        } else if(!havesOperator(operator, false, true, target)) firstNumber.textContent = firstNumber.textContent / 100
-    }
-
-    // poner porcentage, cambiar signo antes de return
-
-    if(target.id == "run") { 
-        run(target)
-    }
-
-    if(result == 1 && !operators.some(operator => text.textContent.includes(operator)) && target.classList.contains("number")) clear()
+    if(endOfOperation == 1 && !havesOperator(text, false, true, target) && target.classList.contains("number")) clear()
 
     if(target.classList.contains("noWrite")) return
         
@@ -122,8 +118,6 @@ function write(target){
     if(!havesOperator(operator, false, true, target)) {
         whatNumber(target, firstNumber)
     }
-
-
     havesOperator(text, true, false, target)
 };
 
@@ -137,19 +131,19 @@ function run(target) {
     switch (operate) {
         case "+":  
             firstNumber.textContent = add(num1, num2)
-            result = 1;
+            endOfOperation = 1;
             break;
         case "-":
             firstNumber.textContent = subtract(num1, num2)
-            result = 1;
+            endOfOperation = 1;
             break;
         case "x":
             firstNumber.textContent = multiply(num1, num2)
-            result = 1;
+            endOfOperation = 1;
             break;
         case "/":
             firstNumber.textContent = divide(num1, num2)
-            result = 1;
+            endOfOperation = 1;
             break;
     }
     operator.textContent = ""
@@ -158,7 +152,7 @@ function run(target) {
 }
 
 function isComplete() {
-    if(firstNumber.textContent != "" && operator.textContent != "" && secondNumber.textContent != "") return true
+    if(firstNumber.textContent != "" && operator.textContent != "" && secondNumber.textContent != "" && secondNumber.textContent != "-") return true
     return false
 }
 
@@ -167,12 +161,18 @@ function clear() {
     operator.textContent=""
     secondNumber.textContent=""
     zeroCondition = 0
-    result = 0;
+    endOfOperation = 0;
     comma.disabled = false
 }
 
+function percentage(target) {
+    if(havesOperator(operator, false, true, target)) {
+        secondNumber.textContent = secondNumber.textContent / 100
+    } else if(!havesOperator(operator, false, true, target)) firstNumber.textContent = firstNumber.textContent / 100
+}
+
 function deleteParenthesis() {
-    secondNumber.textContent.replace(/[()]/g, "")
+    secondNumber.textContent.replace(/[()]/g, "") // CHECK
 }
 
 function add(a, b) {
@@ -191,14 +191,7 @@ function divide(a, b) {
     return Number((a / b).toFixed(15))
 }
 
-function changeSign() {
-    if(havesOperator(text, false, true)) {
-        secondNumber.textContent = Number(secondNumber.textContent * -1)
-    }
-    if(!havesOperator(text, false, true)) {
-        firstNumber.textContent = Number(firstNumber.textContent * -1)
-    }
-}
+
 
 buttons.addEventListener("click", (event) => {
     event.preventDefault();
