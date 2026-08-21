@@ -40,7 +40,7 @@ function whatNumber(target, firstOrSecond) {
     if(target.classList.contains("operator")) op = target.textContent
     if(target.classList.contains("number") || target.id == "comma") num = target.textContent
 
-    if(target.id == "subtract" && (firstOrSecond.textContent[0] == 0 || firstOrSecond.textContent[0] == "") && !firstOrSecond.textContent.includes(".")) {
+    if(target.id == "subtract" && (firstOrSecond.textContent[0] == 0 || firstOrSecond.textContent[0] == "") && !firstOrSecond.textContent.includes(".") && zeroCondition == 0) {
         firstOrSecond.textContent = "-"
         return
     } 
@@ -95,6 +95,12 @@ function write(target){
         changeSign()
     }
 
+    if(target.id == "percentage") {
+        if(havesOperator(operator, false, true, target)) {
+            secondNumber.textContent = secondNumber.textContent / 100
+        } else if(!havesOperator(operator, false, true, target)) firstNumber.textContent = firstNumber.textContent / 100
+    }
+
     // poner porcentage, cambiar signo antes de return
 
     if(target.id == "run") { 
@@ -116,18 +122,18 @@ function write(target){
     if(!havesOperator(operator, false, true, target)) {
         whatNumber(target, firstNumber)
     }
-   
+
+
     havesOperator(text, true, false, target)
 };
 
 function run(target) {
+    // deleteParenthesis()
     let num1 = Number(firstNumber.textContent)
     let operate = operator.textContent
     let num2 = Number(secondNumber.textContent)
     if(operate == "" || num2 == "") return
     console.log( firstNumber.textContent , operator.textContent , secondNumber.textContent )
-    
-
     switch (operate) {
         case "+":  
             firstNumber.textContent = add(num1, num2)
@@ -165,6 +171,10 @@ function clear() {
     comma.disabled = false
 }
 
+function deleteParenthesis() {
+    secondNumber.textContent.replace(/[()]/g, "")
+}
+
 function add(a, b) {
     return Number((a + b).toFixed(15))
 }
@@ -197,18 +207,15 @@ buttons.addEventListener("click", (event) => {
     write(event.target)
 });
 
-// Add the last operation on top of the display in gray like history
-// When an operation is complete like (12 + 7) if another operator is clicked it will run (12+7) an then add the operator
-// operator buttons become available and act like run button when an operation haves all his parts (firstNumber, operator and secondNumber)
-// Create variable like (zeroCondition) that changes depending if operation is full and lets input operator
-
-// When a result is displayed, pressing a new digit should clear the result and start a new calculation instead 
-// of appending the digit to the existing result. Check whether this is the case on your calculator!
-
-
+// patch having the posibility to spam -
+// add parenthesis when secondNumber haves -
+// fix changeSign so it actually works xd
+// weird 0 behaviour, nothink operates when 0 is present
+// add keyboard support
 
 // 3 hours~ first session 15/08/2026
 // 2 ~? second session 16/08/2026
 // 1.5 third session 17/08/2026
 // 1? fourth session 18/08/2026
 // 1? fifth session 19/08/2026
+// 2 sixth session 20/08/2026
