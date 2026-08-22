@@ -1,6 +1,7 @@
 let buttons = document.querySelector(".buttons")
 let text = document.querySelector("#screen")
 let btnOperators = document.querySelectorAll(".operator")
+let parenthesis = document.querySelectorAll(".parenthesis");
 
 let operator = document.getElementById("operator")
 let firstNumber = document.getElementById("firstNumber")
@@ -63,14 +64,15 @@ function whatNumber(target, firstOrSecond) {
             comma.disabled = false
             return
         }
-        firstOrSecond.textContent=num
+        firstOrSecond.textContent = num
         zeroCondition = 1
     } else {
         if(op && !isComplete()) { // aca
             operator.textContent=op 
         } else if(num) firstOrSecond.textContent+=num
     }
-    
+
+    if(secondNumber.textContent.includes("-")) getParenthesis("inline")
 }
 
 function remove(target) {
@@ -93,6 +95,8 @@ function write(target){
     havesOperator(text, false, false, target)
     console.log(endOfOperation)
 
+    if(!secondNumber.textContent.includes("-")) getParenthesis("none")
+
     switch (target.id) {
         case "delete": remove(target); break;
         case "clear": clear(); break;
@@ -109,9 +113,6 @@ function write(target){
 
     if(havesOperator(operator, false, true, target)) {
         whatNumber(target, secondNumber)
-        // if(secondNumber.textContent[0] == "-"){
-        //     secondNumber.textContent=`(${secondNumber.textContent})`
-        // }
     } 
     if(!havesOperator(operator, false, true, target)) {
         whatNumber(target, firstNumber)
@@ -120,7 +121,6 @@ function write(target){
 };
 
 function run(target) {
-    // deleteParenthesis()
     if(operator.textContent === "" || secondNumber.textContent === "") return
     let num1 = Number(firstNumber.textContent)
     let operate = operator.textContent
@@ -146,6 +146,7 @@ function run(target) {
     }
     operator.textContent = ""
     secondNumber.textContent = ""
+    getParenthesis("none")
     checkComma(firstNumber, target)
 }
 
@@ -161,6 +162,7 @@ function clear() {
     zeroCondition = 0
     endOfOperation = 0;
     comma.disabled = false
+    getParenthesis("none")
 }
 
 function percentage(target) {
@@ -172,13 +174,18 @@ function percentage(target) {
 function changeSign() {
     if(secondNumber.textContent !="") {
         secondNumber.textContent = secondNumber.textContent * -1
+        if(secondNumber.textContent.includes("-")){
+            getParenthesis("inline")
+        } else if(!secondNumber.textContent.includes("-")) getParenthesis("none")
     } else if(operator.textContent == "") {
         firstNumber.textContent = firstNumber.textContent * -1
     }
 }
 
-function deleteParenthesis() {
-    secondNumber.textContent.replace(/[()]/g, "") // CHECK
+function getParenthesis(inlineOrNone) {
+    parenthesis.forEach(item => {
+        item.style.display = inlineOrNone;
+    });
 }
 
 function add(a, b) {
@@ -206,7 +213,6 @@ buttons.addEventListener("click", (event) => {
     write(event.target)
 });
 
-// patch having the posibility to spam - // Check if first[0] character is "-"
 // add parenthesis when secondNumber haves -
 // add keyboard support
 

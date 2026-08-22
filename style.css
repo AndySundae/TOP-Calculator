@@ -71,3 +71,7 @@ button, .operator, .noWrite, #changeSign {
 .operator, #run {
     background-color: rgb(38, 125, 255);
 }
+
+.parenthesis {
+    display: none;
+}
