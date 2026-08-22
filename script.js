@@ -12,6 +12,7 @@ let comma = document.getElementById("comma")
 // let totalNumbers = firstNumber.textContent // AHHHH
 
 const operators = ["x", "+", "-", "/"]
+const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
 // CONTROL FLOW, CHECK THE FLOW!!!
 // AGAIN, CHECK ALWAYS THE FLOW
 
@@ -40,8 +41,6 @@ function whatNumber(target, firstOrSecond) {
     if(target.classList.contains("operator")) op = target.textContent
     if(target.classList.contains("number") || target.id == "comma") num = target.textContent
 
-    
-
     if(target.id == "subtract" && 
         (firstOrSecond.textContent[0] == 0 || firstOrSecond.textContent[0] == "") && 
         !firstOrSecond.textContent.includes(".") && zeroCondition == 0) {
@@ -49,13 +48,12 @@ function whatNumber(target, firstOrSecond) {
         return
     } 
 
-    //if(target.id == "subtract" && firstOrSecond.textContent.includes("-")) return
-
     if(operator.textContent != "" && target.id == "subtract" && secondNumber.textContent=="") {
         secondNumber.textContent = "-"
         return
     } else if(isComplete() && target.classList.contains("operator")) run(target)
-    
+
+    if(target.id === "subtract" && !numbers.some(number => firstOrSecond.textContent.includes(number))) return
 
     checkComma(firstOrSecond, target)
     if(firstNumber.textContent == "") firstNumber.textContent="0"
@@ -123,10 +121,10 @@ function write(target){
 
 function run(target) {
     // deleteParenthesis()
+    if(operator.textContent === "" || secondNumber.textContent === "") return
     let num1 = Number(firstNumber.textContent)
     let operate = operator.textContent
     let num2 = Number(secondNumber.textContent)
-    if(operate === "" || num2 === "") return
     console.log( firstNumber.textContent , operator.textContent , secondNumber.textContent )
     switch (operate) {
         case "+":  
@@ -208,7 +206,7 @@ buttons.addEventListener("click", (event) => {
     write(event.target)
 });
 
-// patch having the posibility to spam -
+// patch having the posibility to spam - // Check if first[0] character is "-"
 // add parenthesis when secondNumber haves -
 // add keyboard support
 
@@ -218,3 +216,4 @@ buttons.addEventListener("click", (event) => {
 // 1? fourth session 18/08/2026
 // 1? fifth session 19/08/2026
 // 2 sixth session 20/08/2026
+// 1.5 seventh session 21/08/2026
